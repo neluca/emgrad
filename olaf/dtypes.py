@@ -8,6 +8,8 @@ __all__ = [
     "Scalar",
     "ArrayLike",
     "Dim",
+    "DType",
+    "Shape",
     "ShapeLike",
     "float16",
     "float32",

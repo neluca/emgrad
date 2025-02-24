@@ -9,7 +9,10 @@ __all__ = [
     "Device",
     "DeviceLike",
     "get_available_devices",
-    "set_random_seed"
+    "get_array_device",
+    "set_random_seed",
+    "parse_device",
+    "move_to_device"
 ]
 
 _MAX_LINE_WIDTH = 200
