@@ -1,8 +1,8 @@
 from typing import Any, Literal, Optional
-from olaf.autograd.ops import Op
-from olaf.autograd.ops import unary_ops as UOps
-from olaf.dtypes import ArrayLike, DType, Shape
-from olaf._backends import (
+from ._ops import Op
+from ._ops import unary_ops as UOps
+from ..dtypes import ArrayLike, DType, Shape
+from .._backends import (
     Device,
     get_array_device
 )
