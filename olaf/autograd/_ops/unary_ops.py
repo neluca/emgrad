@@ -3,8 +3,6 @@ from olaf.dtypes import ArrayLike, Scalar
 
 
 class Abs(Op):
-    """Element-wise absolute value."""
-
     def forward(self, x: ArrayLike) -> ArrayLike:
         y = self.xp.absolute(x)
         self.save_to_cache(y != x)
@@ -18,8 +16,6 @@ class Abs(Op):
 
 
 class Exp(Op):
-    """Element-wise exponential."""
-
     def forward(self, x: ArrayLike) -> ArrayLike:
         y = self.xp.exp(x)
         self.save_to_cache(y)
@@ -32,8 +28,6 @@ class Exp(Op):
 
 
 class Log(Op):
-    """Element-wise natural logarithm."""
-
     def forward(self, x: ArrayLike) -> ArrayLike:
         y = self.xp.log(x)
         self.save_to_cache(x)
@@ -46,8 +40,6 @@ class Log(Op):
 
 
 class Pow(Op):
-    """Element-wise power."""
-
     def forward(self, x: ArrayLike, *, exp: Scalar) -> ArrayLike:
         y = x ** exp
         self.save_to_cache(x, exp)
@@ -60,8 +52,6 @@ class Pow(Op):
 
 
 class Sqrt(Op):
-    """Element-wise square root."""
-
     def forward(self, x: ArrayLike) -> ArrayLike:
         y = self.xp.sqrt(x)
         self.save_to_cache(y)
@@ -74,8 +64,6 @@ class Sqrt(Op):
 
 
 class Tanh(Op):
-    """Element-wise hyperbolic tangent."""
-
     def forward(self, x: ArrayLike) -> ArrayLike:
         y = self.xp.tanh(x)
         self.save_to_cache(y)
@@ -88,8 +76,6 @@ class Tanh(Op):
 
 
 class Tril(Op):
-    """Sets lower diagonal elements to `0`."""
-
     def forward(self, x: ArrayLike, *, diag: int) -> ArrayLike:
         y = self.xp.tril(x, diag)
         self.save_to_cache(y == x)
@@ -102,8 +88,6 @@ class Tril(Op):
 
 
 class Triu(Op):
-    """Sets upper diagonal elements to `0`."""
-
     def forward(self, x: ArrayLike, *, diag: int) -> ArrayLike:
         y = self.xp.triu(x, diag)
         self.save_to_cache(y == x)

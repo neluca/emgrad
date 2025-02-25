@@ -23,6 +23,9 @@ __all__ = [
     "uint32",
     "uint64",
     "bool_",
+    "select_dtype",
+    "is_float",
+    "is_int"
 ]
 
 Scalar: TypeAlias = int | float

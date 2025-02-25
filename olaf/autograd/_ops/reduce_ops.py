@@ -4,8 +4,6 @@ from olaf.dtypes import ArrayLike
 
 
 class Sum(Op):
-    """Sum of array elements."""
-
     def forward(
             self, x: ArrayLike, *, dim: Optional[int | tuple[int, ...]], keepdims: bool
     ) -> ArrayLike:
@@ -22,8 +20,6 @@ class Sum(Op):
 
 
 class Mean(Op):
-    """Mean of array elements."""
-
     def forward(
             self, x: ArrayLike, *, dim: Optional[int | tuple[int, ...]], keepdims: bool
     ) -> ArrayLike:
@@ -40,8 +36,6 @@ class Mean(Op):
 
 
 class Var(Op):
-    """Variance of array elements."""
-
     def forward(
             self,
             x: ArrayLike,
@@ -61,8 +55,6 @@ class Var(Op):
 
 
 class Std(Op):
-    """Standard deviation of array elements."""
-
     def forward(
             self,
             x: ArrayLike,
@@ -83,8 +75,6 @@ class Std(Op):
 
 
 class Max(Op):
-    """Maximum of array elements."""
-
     def forward(self, x: ArrayLike, *, dim: Optional[int], keepdims: bool) -> ArrayLike:
         y = x.max(dim, keepdims=True)
         self.save_to_cache(dim, keepdims, x == y)
@@ -99,8 +89,6 @@ class Max(Op):
 
 
 class Min(Op):
-    """Minimum of array elements."""
-
     def forward(self, x: ArrayLike, *, dim: Optional[int], keepdims: bool) -> ArrayLike:
         y = x.min(dim, keepdims=True)
         self.save_to_cache(dim, keepdims, x == y)

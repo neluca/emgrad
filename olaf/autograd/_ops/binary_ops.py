@@ -3,8 +3,6 @@ from olaf.dtypes import ArrayLike
 
 
 class Add(Op):
-    """Element-wise addition."""
-
     def forward(self, x1: ArrayLike, x2: ArrayLike) -> ArrayLike:
         y = x1 + x2
         return y
@@ -16,8 +14,6 @@ class Add(Op):
 
 
 class Sub(Op):
-    """Element-wise subtraction."""
-
     def forward(self, x1: ArrayLike, x2: ArrayLike) -> ArrayLike:
         y = x1 - x2
         return y
@@ -29,8 +25,6 @@ class Sub(Op):
 
 
 class Mul(Op):
-    """Element-wise multiplication."""
-
     def forward(self, x1: ArrayLike, x2: ArrayLike) -> ArrayLike:
         y = x1 * x2
         self.save_to_cache(x1, x2)
@@ -44,8 +38,6 @@ class Mul(Op):
 
 
 class Div(Op):
-    """Element-wise division."""
-
     def forward(self, x1: ArrayLike, x2: ArrayLike) -> ArrayLike:
         y = x1 / x2
         self.save_to_cache(x1, x2)
@@ -59,8 +51,6 @@ class Div(Op):
 
 
 class Dot(Op):
-    """Vector dot product."""
-
     def forward(self, x1: ArrayLike, x2: ArrayLike) -> ArrayLike:
         y = x1 @ x2
         self.save_to_cache(x1, x2)
@@ -74,8 +64,6 @@ class Dot(Op):
 
 
 class Maximum(Op):
-    """Element-wise maximum."""
-
     def forward(self, x1: ArrayLike, x2: ArrayLike) -> ArrayLike:
         y = self.xp.maximum(x1, x2)
         self.save_to_cache(y == x1)
@@ -89,8 +77,6 @@ class Maximum(Op):
 
 
 class Minimum(Op):
-    """Element-wise minimum."""
-
     def forward(self, x1: ArrayLike, x2: ArrayLike) -> ArrayLike:
         y = self.xp.minimum(x1, x2)
         self.save_to_cache(y == x1)
