@@ -10,7 +10,7 @@ class Add(Op):
     def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         dx1 = dy
         dx2 = dy
-        return dx1, dx2
+        return tuple((dx1, dx2))
 
 
 class Sub(Op):
@@ -21,7 +21,7 @@ class Sub(Op):
     def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         dx1 = dy
         dx2 = -dy
-        return dx1, dx2
+        return tuple((dx1, dx2))
 
 
 class Mul(Op):
@@ -34,7 +34,7 @@ class Mul(Op):
         x1, x2 = self.retrieve_from_cache()
         dx1 = dy * x2
         dx2 = dy * x1
-        return dx1, dx2
+        return tuple((dx1, dx2))
 
 
 class Div(Op):
@@ -47,7 +47,7 @@ class Div(Op):
         x1, x2 = self.retrieve_from_cache()
         dx1 = dy / x2
         dx2 = -(dy * x1) / (x2 * x2)
-        return dx1, dx2
+        return tuple((dx1, dx2))
 
 
 class Dot(Op):
@@ -60,7 +60,7 @@ class Dot(Op):
         x1, x2 = self.retrieve_from_cache()
         dx1 = dy @ x2.swapaxes(-1, -2)  # dy @ x2.T
         dx2 = x1.swapaxes(-1, -2) @ dy  # x1.T @ dy
-        return dx1, dx2
+        return tuple((dx1, dx2))
 
 
 class Maximum(Op):
@@ -73,7 +73,7 @@ class Maximum(Op):
         mask = self.retrieve_from_cache()
         dx1 = dy * mask
         dx2 = dy * self.xp.invert(mask)
-        return dx1, dx2
+        return tuple((dx1, dx2))
 
 
 class Minimum(Op):
@@ -86,4 +86,4 @@ class Minimum(Op):
         mask = self.retrieve_from_cache()
         dx1 = dy * mask
         dx2 = dy * self.xp.invert(mask)
-        return dx1, dx2
+        return tuple((dx1, dx2))

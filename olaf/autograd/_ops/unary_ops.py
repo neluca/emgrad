@@ -8,11 +8,11 @@ class Abs(Op):
         self.save_to_cache(y != x)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         mask = self.retrieve_from_cache()
         dx = dy
         self.xp.multiply.at(dx, mask, -1)
-        return dx
+        return tuple((dx,))
 
 
 class Exp(Op):
@@ -21,10 +21,10 @@ class Exp(Op):
         self.save_to_cache(y)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         y = self.retrieve_from_cache()
         dx = dy * y
-        return dx
+        return tuple((dx,))
 
 
 class Log(Op):
@@ -33,10 +33,10 @@ class Log(Op):
         self.save_to_cache(x)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         x = self.retrieve_from_cache()
         dx = dy / x
-        return dx
+        return tuple((dx,))
 
 
 class Pow(Op):
@@ -45,10 +45,10 @@ class Pow(Op):
         self.save_to_cache(x, exp)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         x, exp = self.retrieve_from_cache()
         dx = dy * exp * x ** (exp - 1)
-        return dx
+        return tuple((dx,))
 
 
 class Sqrt(Op):
@@ -57,10 +57,10 @@ class Sqrt(Op):
         self.save_to_cache(y)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         y = self.retrieve_from_cache()
         dx = dy * 0.5 / y
-        return dx
+        return tuple((dx,))
 
 
 class Tanh(Op):
@@ -69,10 +69,10 @@ class Tanh(Op):
         self.save_to_cache(y)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         y = self.retrieve_from_cache()
         dx = dy * (1 - y * y)
-        return dx
+        return tuple((dx,))
 
 
 class Tril(Op):
@@ -81,10 +81,10 @@ class Tril(Op):
         self.save_to_cache(y == x)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         mask = self.retrieve_from_cache()
         dx = dy * mask
-        return dx
+        return tuple((dx,))
 
 
 class Triu(Op):
@@ -93,7 +93,7 @@ class Triu(Op):
         self.save_to_cache(y == x)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         mask = self.retrieve_from_cache()
         dx = dy * mask
-        return dx
+        return tuple((dx,))

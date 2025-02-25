@@ -22,8 +22,8 @@ class Expand(Op):
         y = self.xp.broadcast_to(x, shape)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
-        return dy
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
+        return tuple((dy,))
 
 
 class Transpose(Op):
@@ -32,10 +32,10 @@ class Transpose(Op):
         self.save_to_cache(dim1, dim2)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         dim1, dim2 = self.retrieve_from_cache()
         dx = dy.swapaxes(dim1, dim2)
-        return dx
+        return tuple((dx,))
 
 
 class Select(Op):
@@ -44,11 +44,11 @@ class Select(Op):
         self.save_to_cache(x.shape, key)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         x_shape, key = self.retrieve_from_cache()
         dx = self.xp.zeros(x_shape, dtype=dy.dtype)
         self.xp.add.at(dx, key, dy)
-        return dx
+        return tuple((dx,))
 
 
 class Split(Select):
@@ -73,10 +73,10 @@ class View(Op):
         self.save_to_cache(x.shape)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         (x_shape,) = self.retrieve_from_cache()
         dx = dy.reshape(x_shape)
-        return dx
+        return tuple((dx,))
 
 
 class Squeeze(View):
@@ -98,4 +98,4 @@ class Where(Op):
         mask = self.retrieve_from_cache()
         dx1 = dy * mask
         dx2 = dy * self.xp.invert(mask)
-        return None, dx1, dx2
+        return tuple((None, dx1, dx2))

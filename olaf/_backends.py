@@ -12,6 +12,7 @@ __all__ = [
     "get_array_device",
     "set_random_seed",
     "array_to_string",
+    "select_device",
     "parse_device",
     "move_to_device"
 ]

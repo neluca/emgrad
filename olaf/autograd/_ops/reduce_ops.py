@@ -11,12 +11,12 @@ class Sum(Op):
         self.save_to_cache(x.shape, dim, keepdims)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         x_shape, dim, keepdims = self.retrieve_from_cache()
         if not keepdims and dim is not None:
             dy = self.xp.expand_dims(dy, dim)
         dx = self.xp.broadcast_to(dy, x_shape)
-        return dx
+        return tuple((dx,))
 
 
 class Mean(Op):
@@ -27,12 +27,12 @@ class Mean(Op):
         self.save_to_cache(x.shape, dim, keepdims, x.size / y.size)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         x_shape, dim, keepdims, size = self.retrieve_from_cache()
         if not keepdims and dim is not None:
             dy = self.xp.expand_dims(dy, dim)
         dx = self.xp.broadcast_to(dy / size, x_shape)
-        return dx
+        return tuple((dx,))
 
 
 class Var(Op):
@@ -48,10 +48,10 @@ class Var(Op):
         self.save_to_cache(x, dim, x.size / y.size - ddof)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         x, dim, n = self.retrieve_from_cache()
         dx = dy * 2.0 * (x - x.mean(dim, keepdims=True)) / n
-        return dx
+        return tuple((dx,))
 
 
 class Std(Op):
@@ -67,11 +67,11 @@ class Std(Op):
         self.save_to_cache(x, dim, ddof, y)
         return y
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         x, dim, ddof, y = self.retrieve_from_cache()
         n = x.size / y.size - ddof
         dx = dy * (x - x.mean(dim, keepdims=True)) / (n * y)
-        return dx
+        return tuple((dx,))
 
 
 class Max(Op):
@@ -80,12 +80,12 @@ class Max(Op):
         self.save_to_cache(dim, keepdims, x == y)
         return y if keepdims else y.squeeze()
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         dim, keepdims, mask = self.retrieve_from_cache()
         if not keepdims and dim is not None:
             dy = self.xp.expand_dims(dy, dim)
         dx = mask * dy / mask.sum(dim, dtype=dy.dtype, keepdims=True)
-        return dx
+        return tuple((dx,))
 
 
 class Min(Op):
@@ -94,9 +94,9 @@ class Min(Op):
         self.save_to_cache(dim, keepdims, x == y)
         return y if keepdims else y.squeeze()
 
-    def backward(self, dy: ArrayLike) -> ArrayLike:
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
         dim, keepdims, mask = self.retrieve_from_cache()
         if not keepdims and dim is not None:
             dy = self.xp.expand_dims(dy, dim)
         dx = mask * dy / mask.sum(dim, dtype=dy.dtype, keepdims=True)
-        return dx
+        return tuple((dx,))
