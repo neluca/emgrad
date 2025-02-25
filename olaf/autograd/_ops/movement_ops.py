@@ -4,6 +4,18 @@ from .op import Op
 from olaf.dtypes import ArrayLike, ShapeLike
 
 
+class Reshape(Op):
+    def forward(self, x: ArrayLike, shape: ShapeLike) -> ArrayLike:
+        self.save_to_cache(x.shape)
+        y = self.xp.reshape(x, shape)
+        return y
+
+    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
+        (shape,) = self.retrieve_from_cache()
+        dx = self.xp.reshape(dy, shape)
+        return tuple((dx,))
+
+
 class Concat(Op):
     def forward(self, *arrays: ArrayLike, dim: int) -> ArrayLike:
         y = self.xp.concatenate(arrays, dim)

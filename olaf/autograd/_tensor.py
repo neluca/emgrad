@@ -109,6 +109,9 @@ class Tensor:
     def __eq__(self, x: Scalar | "Tensor") -> "Tensor":
         return Tensor(self.data == self.align(x).data)
 
+    def __ne__(self, x: Scalar | "Tensor") -> "Tensor":
+        return Tensor(self.data != self.align(x).data)
+
     def __lt__(self, x: Scalar | "Tensor") -> "Tensor":
         return Tensor(self.data < self.align(x).data)
 
@@ -232,6 +235,9 @@ class Tensor:
 
     def min(self, dim: Optional[Dim] = None, *, keepdims: bool = False) -> "Tensor":
         return apply_op(ROps.Min, self, dim=dim, keepdims=keepdims)
+
+    def reshape(self, *shape: int) -> "Tensor":
+        return apply_op(MOps.Reshape, self, shape=shape)
 
     def expand(self, *dims: int) -> "Tensor":
         return apply_op(MOps.Expand, self, shape=dims)
@@ -385,4 +391,3 @@ def _get_node_tree_dfs(node: Tensor, queue: list[Tensor], visited: set) -> list[
                 _ = _get_node_tree_dfs(p, queue, visited)
         queue.append(node)
     return queue
-
