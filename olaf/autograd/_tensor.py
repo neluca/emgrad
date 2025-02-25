@@ -16,7 +16,6 @@ _autograd_tracking_active = True
 
 
 def _parse_key(key: Any) -> Any:
-    """Ensures the key is processable by the backend."""
     if isinstance(key, tuple):
         return tuple(k.data if isinstance(k, Tensor) else k for k in key)
     if isinstance(key, Tensor):
@@ -25,7 +24,6 @@ def _parse_key(key: Any) -> Any:
 
 
 def _get_shape_diff(shape1: ShapeLike, shape2: ShapeLike) -> Dim:
-    """Returns the dims where two shapes do not match."""
     return tuple(i for i in range(len(shape1)) if shape1[i] != shape2[i])
 
 
@@ -47,7 +45,6 @@ class Tensor:
 
     @property
     def label(self) -> str:
-        """Returns the tensor label."""
         if self._label:
             return self._label
         if self.ctx is not None:
@@ -56,32 +53,26 @@ class Tensor:
 
     @property
     def device(self) -> Device:
-        """Returns the device on which the tensor data is stored."""
         return get_array_device(self.data)
 
     @property
     def dtype(self) -> DType:
-        """Returns the data type of the tensor."""
         return self.data.dtype
 
     @property
     def ndim(self) -> int:
-        """Returns the number of dimensions of the tensor."""
         return self.data.ndim
 
     @property
     def shape(self) -> Shape:
-        """Returns the shape of the tensor."""
         return Shape(self.data.shape)
 
     @property
     def size(self) -> int:
-        """Returns the total number of elements in the tensor."""
         return self.data.size
 
     @property
     def T(self) -> "Tensor":
-        """Returns the transposed tensor."""
         return self.transpose(-2, -1)
 
     def __add__(self, x: Scalar | "Tensor") -> "Tensor":
