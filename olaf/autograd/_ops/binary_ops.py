@@ -70,7 +70,7 @@ class Maximum(Op):
         return y
 
     def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
-        mask = self.retrieve_from_cache()
+        (mask,) = self.retrieve_from_cache()
         dx1 = dy * mask
         dx2 = dy * self.xp.invert(mask)
         return tuple((dx1, dx2))
@@ -83,7 +83,7 @@ class Minimum(Op):
         return y
 
     def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
-        mask = self.retrieve_from_cache()
+        (mask,) = self.retrieve_from_cache()
         dx1 = dy * mask
         dx2 = dy * self.xp.invert(mask)
         return tuple((dx1, dx2))

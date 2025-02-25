@@ -30,7 +30,7 @@ class Op(ABC):
         """
         self._cache = args
 
-    def retrieve_from_cache(self) -> Any:
+    def retrieve_from_cache(self) -> tuple[Any, ...]:
         """Retrieves the cached values and resets the cache afterwards.
 
         Returns:

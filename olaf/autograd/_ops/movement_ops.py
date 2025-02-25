@@ -62,7 +62,7 @@ class Stack(Op):
         return y
 
     def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
-        dim = self.retrieve_from_cache()
+        (dim,) = self.retrieve_from_cache()
         dxs = tuple(self.xp.moveaxis(dy, dim, 0))
         return tuple(dxs)
 
@@ -95,7 +95,7 @@ class Where(Op):
         return y
 
     def backward(self, dy: ArrayLike) -> tuple[None, ArrayLike, ...]:
-        mask = self.retrieve_from_cache()
+        (mask,) = self.retrieve_from_cache()
         dx1 = dy * mask
         dx2 = dy * self.xp.invert(mask)
         return tuple((None, dx1, dx2))
