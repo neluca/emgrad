@@ -4,9 +4,7 @@ from olaf.dtypes import ArrayLike
 
 
 class Sum(Op):
-    def forward(
-            self, x: ArrayLike, *, dim: Optional[int | tuple[int, ...]], keepdims: bool
-    ) -> ArrayLike:
+    def forward(self, x: ArrayLike, *, dim: Optional[int | tuple[int, ...]], keepdims: bool) -> ArrayLike:
         y = x.sum(dim, keepdims=keepdims)
         self.save_to_cache(x.shape, dim, keepdims)
         return y
@@ -20,9 +18,7 @@ class Sum(Op):
 
 
 class Mean(Op):
-    def forward(
-            self, x: ArrayLike, *, dim: Optional[int | tuple[int, ...]], keepdims: bool
-    ) -> ArrayLike:
+    def forward(self, x: ArrayLike, *, dim: Optional[int | tuple[int, ...]], keepdims: bool) -> ArrayLike:
         y = x.mean(dim, keepdims=keepdims)
         self.save_to_cache(x.shape, dim, keepdims, x.size / y.size)
         return y

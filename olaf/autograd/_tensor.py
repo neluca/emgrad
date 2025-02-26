@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Literal, Optional, Iterator
+from typing import Any, Optional, Iterator
 import numpy as np
 from ._ops import Op
 from ._ops import unary_ops as UOps
@@ -10,9 +10,19 @@ from ._ops import movement_ops as MOps
 from ..dtypes import *
 from .._backends import *
 
-__all__ = ["Tensor", "apply_op"]
+__all__ = ["Tensor", "apply_op", "no_grad"]
 
-_autograd_tracking_active = True
+_autograd_tracking_active: bool = True
+
+
+class no_grad:
+    def __enter__(self):
+        global _autograd_tracking_active
+        _autograd_tracking_active = False
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        global _autograd_tracking_active
+        _autograd_tracking_active = True
 
 
 def _parse_key(key: Any) -> Any:
@@ -159,6 +169,7 @@ class Tensor:
         for node in reversed(node_queue):
             assert node.ctx is not None, "Node has no function context."
             assert node.src is not None, "Node has no source nodes."
+            assert node.grad is not None, "Node has no grad."
             grads = node.ctx.backward(node.grad)
             for src_tensor, grad in zip(node.src, grads):
                 if src_tensor is None or not src_tensor.req_grad:
@@ -239,8 +250,8 @@ class Tensor:
     def reshape(self, *shape: int) -> "Tensor":
         return apply_op(MOps.Reshape, self, shape=shape)
 
-    def expand(self, *dims: int) -> "Tensor":
-        return apply_op(MOps.Expand, self, shape=dims)
+    def expand(self, *shape: int) -> "Tensor":
+        return apply_op(MOps.Expand, self, shape=shape)
 
     def select(self, key: Any) -> "Tensor":
         key = _parse_key(key)
@@ -268,10 +279,10 @@ class Tensor:
     def transpose(self, dim1: int = -1, dim2: int = -2) -> "Tensor":
         return apply_op(MOps.Transpose, self, dim1=dim1, dim2=dim2)
 
-    def view(self, *dims: int) -> "Tensor":
-        if dims == self.shape:
+    def view(self, *shape: int) -> "Tensor":
+        if shape == self.shape:
             return self
-        return apply_op(MOps.View, self, shape=dims)
+        return apply_op(MOps.View, self, shape=shape)
 
     def as_type(self, dtype: DType) -> "Tensor":
         if self.dtype == dtype:
@@ -371,12 +382,12 @@ def _undo_broadcast(grad: ArrayLike, target_shape: ShapeLike) -> ArrayLike:
     target_ndim = len(target_shape)
 
     if grad.ndim == target_ndim:
-        dims = _get_shape_diff(grad.shape, target_shape)
-        grad = grad.sum(dims, keepdims=True)
+        shape = _get_shape_diff(grad.shape, target_shape)
+        grad = grad.sum(shape, keepdims=True)
     else:
         data_shape = Shape((1,) * (grad.ndim - target_ndim) + target_shape)
-        dims = _get_shape_diff(grad.shape, data_shape)
-        grad = grad.sum(dims)
+        shape = _get_shape_diff(grad.shape, data_shape)
+        grad = grad.sum(shape)
 
     return grad.reshape(target_shape)
 

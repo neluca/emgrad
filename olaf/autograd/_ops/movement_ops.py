@@ -96,12 +96,7 @@ class Squeeze(View):
 
 
 class Where(Op):
-    def forward(
-            self,
-            condition: ArrayLike,
-            x1: ArrayLike,
-            x2: ArrayLike,
-    ) -> ArrayLike:
+    def forward(self, condition: ArrayLike, x1: ArrayLike, x2: ArrayLike) -> ArrayLike:
         y = self.xp.where(condition, x1, x2)
         self.save_to_cache(y == x1)
         return y
