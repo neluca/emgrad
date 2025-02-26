@@ -1,6 +1,6 @@
 from itertools import accumulate
 from typing import Any
-from .op import Op
+from olaf.operators import Op
 from olaf.dtypes import ArrayLike, ShapeLike
 
 

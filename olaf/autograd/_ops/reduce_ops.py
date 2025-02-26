@@ -1,5 +1,5 @@
 from typing import Optional
-from .op import Op
+from olaf.operators import Op
 from olaf.dtypes import ArrayLike
 
 

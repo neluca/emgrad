@@ -16,7 +16,7 @@ __all__ = [
     "full_like",
     "concat",
     "stack",
-    "where"
+    "where",
 ]
 
 

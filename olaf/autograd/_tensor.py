@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Optional, Iterator
 import numpy as np
-from ._ops import Op
+from olaf.operators import Op
 from ._ops import unary_ops as UOps
 from ._ops import binary_ops as BOps
 from ._ops import reduce_ops as ROps
@@ -360,7 +360,7 @@ class Tensor:
 def apply_op(op: type[Op], *tensors: Optional[Tensor], **kwargs: Any) -> Tensor:
     tensor_args = [t for t in tensors if t is not None]
     device = tensor_args[0].device
-    ctx = op(device, kwargs)
+    ctx = op(device)
 
     # compute forward pass
     fwd_args = [t.data if t is not None else None for t in tensors]

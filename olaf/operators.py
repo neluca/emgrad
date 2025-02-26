@@ -6,7 +6,7 @@ from olaf.dtypes import ArrayLike
 
 
 class Op(ABC):
-    def __init__(self, device: Device, kwargs: Any) -> None:
+    def __init__(self, device: Device, **kwargs: Any) -> None:
         self.xp = device.xp
         self.kwargs = kwargs
         self._cache: Any = None
@@ -28,5 +28,5 @@ class Op(ABC):
         raise NotImplementedError("Forward pass not implemented for this function")
 
     @abstractmethod
-    def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...] | tuple[None, ArrayLike, ...]:
+    def backward(self, dy: ArrayLike) -> tuple[Any, ...]:
         raise NotImplementedError("Backward pass not implemented for this function")
