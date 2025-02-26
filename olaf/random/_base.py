@@ -17,8 +17,8 @@ __all__ = [
 ]
 
 
-def seed(num: int) -> None:
-    set_random_seed(num)
+def seed(_seed: int) -> None:
+    set_random_seed(_seed)
 
 
 def rand(

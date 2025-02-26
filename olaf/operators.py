@@ -25,8 +25,8 @@ class Op(ABC):
 
     @abstractmethod
     def forward(self, *arrays: Optional[ArrayLike], **kwargs: Any) -> ArrayLike:
-        raise NotImplementedError("Forward pass not implemented for this function")
+        raise NotImplementedError("Subclasses must implement the forward method.")
 
     @abstractmethod
     def backward(self, dy: ArrayLike) -> tuple[Any, ...]:
-        raise NotImplementedError("Backward pass not implemented for this function")
+        raise NotImplementedError("Subclasses must implement the backward method.")

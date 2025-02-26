@@ -17,28 +17,28 @@ __all__ = [
 
 _MAX_LINE_WIDTH = 200
 _PRECISION = 4
-_FLOATMODE = "maxprec_equal"
+_FLOAT_MODE = "maxprec_equal"
 
 _CPU_BACKEND = numpy
-_CPU_BACKEND.set_printoptions(precision=_PRECISION, linewidth=_MAX_LINE_WIDTH, floatmode=_FLOATMODE)
+_CPU_BACKEND.set_printoptions(precision=_PRECISION, linewidth=_MAX_LINE_WIDTH, floatmode=_FLOAT_MODE)
 
 try:
     import cupy
 
-    _GPU_BACKEND = cupy
-    _GPU_BACKEND.set_printoptions(precision=_PRECISION, linewidth=_MAX_LINE_WIDTH, floatmode=_FLOATMODE)
+    _CUDA_BACKEND = cupy
+    _CUDA_BACKEND.set_printoptions(precision=_PRECISION, linewidth=_MAX_LINE_WIDTH, floatmode=_FLOAT_MODE)
 except ImportError:
-    _GPU_BACKEND = None
+    _CUDA_BACKEND = None
 
 
-def gpu_available():
-    return _GPU_BACKEND is not None and _GPU_BACKEND.cuda.is_available()
+def cuda_available():
+    return _CUDA_BACKEND is not None and _CUDA_BACKEND.cuda.is_available()
 
 
 def set_random_seed(seed: int):
     _CPU_BACKEND.random.seed(seed)
-    if gpu_available():
-        _GPU_BACKEND.random.seed(seed)
+    if cuda_available():
+        _CUDA_BACKEND.random.seed(seed)
 
 
 def array_to_string(data: ArrayLike, prefix: str) -> str:
@@ -49,7 +49,7 @@ def array_to_string(data: ArrayLike, prefix: str) -> str:
         precision=_PRECISION,
         separator=", ",
         prefix=prefix,
-        floatmode=_FLOATMODE,
+        floatmode=_FLOAT_MODE,
     )
 
 
@@ -58,7 +58,7 @@ def _get_type_and_id(device_type: str) -> tuple[str, Optional[int]]:
     if match:
         device_type = match.group("type")
         if device_type == "cuda":
-            assert gpu_available(), "GPUs are not available."
+            assert cuda_available(), "CUDA are not available."
         device_id = match.group("id")
         return device_type, None if device_id is None else int(device_id)
     raise ValueError(f"Unknown device: {device_type}")
@@ -69,7 +69,7 @@ class Device:
         dev_type, dev_id = _get_type_and_id(dev_type)
         self.dev_type = dev_type
         self.dev_id = dev_id
-        self.xp = _CPU_BACKEND if dev_type == "cpu" else _GPU_BACKEND
+        self.xp = _CPU_BACKEND if dev_type == "cpu" else _CUDA_BACKEND
 
     def __eq__(self, other: Any) -> bool:
         return (
@@ -89,12 +89,12 @@ class Device:
     def __enter__(self) -> None:
         if self.dev_type == "cpu":
             return None
-        return _GPU_BACKEND.cuda.Device(self.dev_id).__enter__()
+        return _CUDA_BACKEND.cuda.Device(self.dev_id).__enter__()
 
     def __exit__(self, *args: Any) -> None:
         if self.dev_type == "cpu":
             return None
-        return _GPU_BACKEND.cuda.Device(self.dev_id).__exit__(*args)
+        return _CUDA_BACKEND.cuda.Device(self.dev_id).__exit__(*args)
 
 
 DeviceLike: TypeAlias = Device | str
@@ -102,10 +102,10 @@ DeviceLike: TypeAlias = Device | str
 
 def get_available_devices() -> list[str]:
     devices = ["cpu"]
-    if _GPU_BACKEND is not None:
-        num_gpu_devices = _GPU_BACKEND.cuda.runtime.getDeviceCount()
-        gpu_devices = [f"cuda:{i}" for i in range(num_gpu_devices)]
-        devices.extend(gpu_devices)
+    if _CUDA_BACKEND is not None:
+        num_devices = _CUDA_BACKEND.cuda.runtime.getDeviceCount()
+        cuda_devices = [f"cuda:{i}" for i in range(num_devices)]
+        devices.extend(cuda_devices)
     return devices
 
 
@@ -125,6 +125,6 @@ def parse_device(device: DeviceLike) -> Device:
 
 def move_to_device(data: ArrayLike, device: Device) -> ArrayLike:
     if device == Device("cpu"):
-        return _GPU_BACKEND.asnumpy(data)
-    assert gpu_available(), "GPUs are not available."
+        return _CUDA_BACKEND.asnumpy(data)
+    assert cuda_available(), "CUDA are not available."
     return cupy.asarray(data)
