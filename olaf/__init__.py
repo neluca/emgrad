@@ -20,5 +20,5 @@ from .autograd import (
     concat,
     stack,
     where,
+    random,
 )
-from .random import *

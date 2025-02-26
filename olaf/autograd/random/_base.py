@@ -1,8 +1,8 @@
 from typing import Optional
 
-from ..autograd import *
-from ..dtypes import *
-from .._backends import *
+from olaf.autograd import *
+from olaf.dtypes import *
+from olaf._backends import *
 
 __all__ = [
     "seed",
