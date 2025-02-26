@@ -12,7 +12,9 @@ __all__ = [
     "array_to_string",
     "select_device",
     "parse_device",
-    "move_to_device"
+    "move_to_device",
+    "set_nn_device",
+    "get_nn_device",
 ]
 
 _MAX_LINE_WIDTH = 200
@@ -58,7 +60,7 @@ def _get_type_and_id(device_type: str) -> tuple[str, Optional[int]]:
     if match:
         device_type = match.group("type")
         if device_type == "cuda":
-            assert cuda_available(), "CUDA are not available."
+            assert cuda_available(), "CUDA is not available."
         device_id = match.group("id")
         return device_type, None if device_id is None else int(device_id)
     raise ValueError(f"Unknown device: {device_type}")
@@ -103,8 +105,8 @@ DeviceLike: TypeAlias = Device | str
 def get_available_devices() -> list[str]:
     devices = ["cpu"]
     if _CUDA_BACKEND is not None:
-        num_devices = _CUDA_BACKEND.cuda.runtime.getDeviceCount()
-        cuda_devices = [f"cuda:{i}" for i in range(num_devices)]
+        num_cuda_devices = _CUDA_BACKEND.cuda.runtime.getDeviceCount()
+        cuda_devices = [f"cuda:{i}" for i in range(num_cuda_devices)]
         devices.extend(cuda_devices)
     return devices
 
@@ -126,5 +128,22 @@ def parse_device(device: DeviceLike) -> Device:
 def move_to_device(data: ArrayLike, device: Device) -> ArrayLike:
     if device == Device("cpu"):
         return _CUDA_BACKEND.asnumpy(data)
-    assert cuda_available(), "CUDA are not available."
+    assert cuda_available(), "CUDA is not available."
     return cupy.asarray(data)
+
+
+_NN_DEVICE = Device("cpu")
+
+
+def set_nn_device(device: str) -> None:
+    global _NN_DEVICE
+    devices = get_available_devices()
+    if device in devices:
+        _NN_DEVICE = Device(device)
+    else:
+        _NN_DEVICE = Device("cpu")
+        print(f">>> {device} is not available, Using CPU as default ...")
+
+
+def get_nn_device() -> Device:
+    return _NN_DEVICE

@@ -17,6 +17,7 @@ __all__ = [
     "concat",
     "stack",
     "where",
+    "_parse_factory_kwargs",
 ]
 
 

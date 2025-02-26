@@ -1,7 +1,7 @@
 from itertools import accumulate
 from typing import Any
-from olaf.operators import Op
-from olaf.dtypes import ArrayLike, ShapeLike
+from emgrad.operators import Op
+from emgrad.dtypes import ArrayLike, ShapeLike
 
 
 class Reshape(Op):

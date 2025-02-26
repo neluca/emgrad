@@ -1,5 +1,5 @@
 from .. import _ops as NNOps
-from olaf.autograd import Tensor, apply_op
+from emgrad.autograd import Tensor, apply_op
 
 
 def dropout(x: Tensor, p: float = 0.5, training: bool = True) -> Tensor:

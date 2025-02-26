@@ -9,6 +9,14 @@ from ._backends import *
 from .autograd import (
     Tensor,
     no_grad,
+    concat,
+    stack,
+    where,
+    random,
+)
+
+from .device_tensor import (
+    set_device,
     tensor,
     arange,
     ones,
@@ -17,8 +25,4 @@ from .autograd import (
     zeros_like,
     full,
     full_like,
-    concat,
-    stack,
-    where,
-    random,
 )

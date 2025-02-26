@@ -1,6 +1,6 @@
 from .. import _ops as NNOps
-from olaf.autograd import Tensor, apply_op, parse_key
-from olaf.dtypes import is_int
+from emgrad.autograd import Tensor, apply_op, parse_key
+from emgrad.dtypes import is_int
 
 
 def embedding(x: Tensor, emb_table: Tensor) -> Tensor:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Optional, Iterator
 import numpy as np
-from olaf.operators import Op
+from emgrad.operators import Op
 from ._ops import unary_ops as UOps
 from ._ops import binary_ops as BOps
 from ._ops import reduce_ops as ROps

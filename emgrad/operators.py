@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 
-from olaf._backends import Device
-from olaf.dtypes import ArrayLike
+from emgrad._backends import Device
+from emgrad.dtypes import ArrayLike
 
 
 class Op(ABC):

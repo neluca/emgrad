@@ -1,5 +1,5 @@
 from .. import _ops as NNOps
-from olaf.autograd import Tensor, apply_op
+from emgrad.autograd import Tensor, apply_op
 
 
 def sigmoid(x: Tensor) -> Tensor:

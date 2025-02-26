@@ -2,8 +2,8 @@ import numpy as np
 import torch
 from torch import Tensor as _Tensor
 
-import olaf as ol
-from olaf import *
+import emgrad as ol
+from emgrad import *
 
 np.random.seed(0)
 
@@ -38,12 +38,12 @@ def get_random_bools(shape: ShapeLike):
 
 
 def get_ones(shape: ShapeLike, req_grad: bool = False):
-    x = ol.ones(*shape, req_grad=req_grad)
+    x = ol.autograd.ones(*shape, req_grad=req_grad)
     torch_x = torch.tensor(x.data, requires_grad=req_grad)
     return x, torch_x
 
 
 def get_zeros(shape: ShapeLike, req_grad: bool = False):
-    x = ol.zeros(*shape, req_grad=req_grad)
+    x = ol.autograd.zeros(*shape, req_grad=req_grad)
     torch_x = torch.tensor(x.data, requires_grad=req_grad)
     return x, torch_x

@@ -1,5 +1,5 @@
-from olaf.operators import Op
-from olaf.dtypes import ArrayLike, Scalar
+from emgrad.operators import Op
+from emgrad.dtypes import ArrayLike, Scalar
 
 
 class Abs(Op):

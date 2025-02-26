@@ -1,7 +1,7 @@
 from typing import Literal
 from .. import _ops as NNOps
-from olaf.autograd import Tensor, apply_op
-from olaf.dtypes import is_int
+from emgrad.autograd import Tensor, apply_op
+from emgrad.dtypes import is_int
 
 
 def mse_loss(

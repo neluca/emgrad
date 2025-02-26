@@ -2,8 +2,8 @@ from setuptools import find_packages, setup
 import pathlib
 
 setup(
-    name="olaf",
-    version=pathlib.Path("olaf/VERSION").read_text(encoding="utf-8"),
+    name="emgrad",
+    version=pathlib.Path("emgrad/VERSION").read_text(encoding="utf-8"),
     description="A deep learning library built from scratch.",
     long_description=pathlib.Path("README.md").read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",

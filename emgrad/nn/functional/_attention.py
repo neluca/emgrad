@@ -1,6 +1,6 @@
 from typing import Optional
 from .. import _ops as NNOps
-from olaf.autograd import Tensor, apply_op
+from emgrad.autograd import Tensor, apply_op
 
 
 def scaled_dot_product_attention(

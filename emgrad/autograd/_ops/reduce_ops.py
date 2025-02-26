@@ -1,6 +1,6 @@
 from typing import Optional
-from olaf.operators import Op
-from olaf.dtypes import ArrayLike
+from emgrad.operators import Op
+from emgrad.dtypes import ArrayLike
 
 
 class Sum(Op):

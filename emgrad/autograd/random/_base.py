@@ -1,8 +1,9 @@
 from typing import Optional
 
-from olaf.autograd import *
-from olaf.dtypes import *
-from olaf._backends import *
+from emgrad.autograd import *
+from emgrad.dtypes import *
+from emgrad._backends import *
+from .._tensor_func import _parse_factory_kwargs
 
 __all__ = [
     "seed",
@@ -24,8 +25,7 @@ def seed(_seed: int) -> None:
 def rand(
         *shape: int, device: Optional[DeviceLike] = None, dtype: Optional[DType] = None, req_grad: bool = False,
 ) -> Tensor:
-    device = select_device(device)
-    dtype = select_dtype(dtype)
+    device, dtype = _parse_factory_kwargs(device, dtype)
     with device:
         data = device.xp.random.rand(shape).astype(dtype)
     return Tensor(data, req_grad=req_grad)
@@ -39,8 +39,7 @@ def randint(
         dtype: Optional[DType] = int64,
         req_grad: bool = False,
 ) -> Tensor:
-    device = select_device(device)
-    dtype = select_dtype(dtype)
+    device, dtype = _parse_factory_kwargs(device, dtype)
     with device:
         data = device.xp.random.randint(low, high, shape, dtype)
     return Tensor(data, req_grad=req_grad)
@@ -60,8 +59,7 @@ def randn(
         dtype: Optional[DType] = None,
         req_grad: bool = False,
 ) -> Tensor:
-    device = select_device(device)
-    dtype = select_dtype(dtype)
+    device, dtype = _parse_factory_kwargs(device, dtype)
     with device:
         data = device.xp.random.normal(mean, var, shape).astype(dtype)
     return Tensor(data, req_grad=req_grad)
@@ -83,8 +81,7 @@ def uniform(
         dtype: Optional[DType] = None,
         req_grad: bool = False,
 ) -> Tensor:
-    device = select_device(device)
-    dtype = select_dtype(dtype)
+    device, dtype = _parse_factory_kwargs(device, dtype)
     with device:
         data = device.xp.random.uniform(low, high, shape).astype(dtype)
     return Tensor(data, req_grad=req_grad)
@@ -104,8 +101,7 @@ def permutation(
         dtype: Optional[DType] = int64,
         req_grad: bool = False,
 ) -> Tensor:
-    device = select_device(device)
-    dtype = select_dtype(dtype)
+    device, dtype = _parse_factory_kwargs(device, dtype)
     with device:
         data = device.xp.random.permutation(n).astype(dtype)
     return Tensor(data, req_grad=req_grad)
