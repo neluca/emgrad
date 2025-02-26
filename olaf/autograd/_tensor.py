@@ -10,7 +10,7 @@ from ._ops import movement_ops as MOps
 from ..dtypes import *
 from .._backends import *
 
-__all__ = ["Tensor", "apply_op", "no_grad"]
+__all__ = ["Tensor", "apply_op", "no_grad", "parse_key"]
 
 _autograd_tracking_active: bool = True
 
@@ -25,7 +25,7 @@ class no_grad:
         _autograd_tracking_active = True
 
 
-def _parse_key(key: Any) -> Any:
+def parse_key(key: Any) -> Any:
     if isinstance(key, tuple):
         return tuple(k.data if isinstance(k, Tensor) else k for k in key)
     if isinstance(key, Tensor):
@@ -254,11 +254,11 @@ class Tensor:
         return apply_op(MOps.Expand, self, shape=shape)
 
     def select(self, key: Any) -> "Tensor":
-        key = _parse_key(key)
+        key = parse_key(key)
         return apply_op(MOps.Select, self, key=key)
 
     def _split(self, key: Any) -> "Tensor":
-        key = _parse_key(key)
+        key = parse_key(key)
         return apply_op(MOps.Split, self, key=key)
 
     def split(self, split_size: int, *, dim: int = -1) -> list["Tensor"]:
