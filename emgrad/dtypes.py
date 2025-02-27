@@ -22,7 +22,7 @@ __all__ = [
     "bool_",
     "select_dtype",
     "is_float",
-    "is_int"
+    "is_integer"
 ]
 
 Scalar: TypeAlias = int | float
@@ -68,5 +68,5 @@ def is_float(dtype: DType) -> bool:
     return any(dtype == d for d in [float16, float32, float64])
 
 
-def is_int(dtype: DType) -> bool:
+def is_integer(dtype: DType) -> bool:
     return any(dtype == d for d in [int16, int32, int64])
