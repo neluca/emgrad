@@ -7,13 +7,13 @@ setup(
     description="A deep learning library built from scratch.",
     long_description=pathlib.Path("README.md").read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",
-    url="https://github.com/neluca/olaf",
+    url="https://github.com/neluca/emgrad",
     author="Neluca",
     author_email="myneluca@gmail.com",
     license="MIT",
     project_urls={
-        "Source Code": "https://github.com/neluca/olaf",
-        "Issues": "https://github.com/neluca/olaf/issues",
+        "Source Code": "https://github.com/neluca/emgrad",
+        "Issues": "https://github.com/neluca/emgrad/issues",
     },
     classifiers=[
         "Development Status :: 1 - Beta",
