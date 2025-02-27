@@ -54,14 +54,14 @@ def randint_like(x: Tensor, low: int, high: int, req_grad: bool = False) -> Tens
 def randn(
         *shape: int,
         mean: float = 0,
-        var: float = 1,
+        std: float = 1,
         device: Optional[DeviceLike] = None,
         dtype: Optional[DType] = None,
         req_grad: bool = False,
 ) -> Tensor:
     device, dtype = _parse_factory_kwargs(device, dtype)
     with device:
-        data = device.xp.random.normal(mean, var, shape).astype(dtype)
+        data = device.xp.random.normal(mean, std, shape).astype(dtype)
     return Tensor(data, req_grad=req_grad)
 
 
@@ -69,7 +69,7 @@ def randn_like(
         x: Tensor, mean: float = 0, var: float = 1, req_grad: bool = False
 ) -> Tensor:
     return randn(
-        *x.shape, mean=mean, var=var, device=x.device, dtype=x.dtype, req_grad=req_grad
+        *x.shape, mean=mean, std=var, device=x.device, dtype=x.dtype, req_grad=req_grad
     )
 
 

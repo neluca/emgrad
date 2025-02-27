@@ -90,7 +90,7 @@ def zeros_like(x: Tensor, req_grad: bool = False) -> Tensor:
 
 def full(
         *shape: int,
-        value: Scalar,
+        value: Scalar = 1,
         device: Optional[DeviceLike] = None,
         dtype: Optional[DType] = None,
         req_grad: bool = False,

@@ -10,5 +10,6 @@ from ._tensor_func import (
     full_like,
     concat,
     stack,
-    where
+    where,
 )
+from . import random
