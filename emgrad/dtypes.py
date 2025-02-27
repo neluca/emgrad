@@ -34,8 +34,7 @@ DType: TypeAlias = type
 
 class Shape(tuple):
     def __repr__(self) -> str:
-        s = super().__repr__().replace("(", "").replace(")", "")
-        return f"shape({s})"
+        return f"shape{super().__repr__()}"
 
 
 ShapeLike: TypeAlias = Shape | tuple[int, ...]
