@@ -3,14 +3,14 @@ from typing import Any, Optional
 from ._backends import set_nn_device, get_nn_device
 from .autograd import Tensor
 from . import autograd
-from .dtypes import DType, Scalar
+from .dtypes import DType, Scalar, float32
 
 
 def set_device(device: str) -> None:
     set_nn_device(device)
 
 
-def tensor(data: Any, dtype: Optional[DType] = None, req_grad: bool = True) -> Tensor:
+def tensor(data: Any, dtype: Optional[DType] = float32, req_grad: bool = True) -> Tensor:
     return autograd.tensor(data, get_nn_device(), dtype, req_grad)
 
 
