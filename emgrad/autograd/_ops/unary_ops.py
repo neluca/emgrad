@@ -40,9 +40,9 @@ class Log(Op):
 
 
 class Pow(Op):
-    def forward(self, x: ArrayLike, *, exp: Scalar) -> ArrayLike:
-        y = x ** exp
-        self.save_to_cache(x, exp)
+    def forward(self, x: ArrayLike, *, power: Scalar) -> ArrayLike:
+        y = x ** power
+        self.save_to_cache(x, power)
         return y
 
     def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:

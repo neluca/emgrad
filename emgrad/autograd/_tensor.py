@@ -178,7 +178,7 @@ class Tensor:
                 src_tensor.accumulate_grad(grad)
 
             # clear context of intermediate nodes
-            node.grad, node.ctx, node.src = None, None, None
+            # node.grad, node.ctx, node.src = None, None, None
 
     def abs(self) -> "Tensor":
         return apply_op(UOps.Abs, self)
@@ -189,8 +189,8 @@ class Tensor:
     def log(self) -> "Tensor":
         return apply_op(UOps.Log, self)
 
-    def pow(self, exponent: Scalar) -> "Tensor":
-        return apply_op(UOps.Pow, self, exp=exponent)
+    def pow(self, power: Scalar) -> "Tensor":
+        return apply_op(UOps.Pow, self, power=power)
 
     def sqrt(self) -> "Tensor":
         return apply_op(UOps.Sqrt, self)
