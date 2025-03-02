@@ -46,8 +46,8 @@ class Pow(Op):
         return y
 
     def backward(self, dy: ArrayLike) -> tuple[ArrayLike, ...]:
-        x, exp = self.retrieve_from_cache()
-        dx = dy * exp * x ** (exp - 1)
+        x, power = self.retrieve_from_cache()
+        dx = dy * power * x ** (power - 1)
         return tuple((dx,))
 
 
